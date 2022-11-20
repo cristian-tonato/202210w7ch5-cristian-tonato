@@ -16,7 +16,7 @@ app.get('/', (_req, res) => {
     res.send('Robot').end();
 });
 
-app.use('/games', robotRouter);
+app.use('/robot', robotRouter);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use(
