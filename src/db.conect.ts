@@ -14,3 +14,5 @@ export function dbConnect() {
     debug(DBName);
     return mongoose.connect(uri);
 }
+
+//mongodb+srv://CristianTonato:<password>@cluster0.ktm5wrs.mongodb.net/?retryWrites=true&w=majority
