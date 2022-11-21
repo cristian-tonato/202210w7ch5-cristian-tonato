@@ -1,13 +1,13 @@
-import { RobotController } from './../controllers/robot.controller.js';
-import { RobotFileData } from './../data/robots.file.data.js';
 import { Router } from 'express';
+import { RobotController } from '..//controllers/robot.controller.js';
+import { RobotRepository } from '../data/robots.repository.js';
 
-export const robotRouter = Router();
+export const robotsRouter = Router();
 
-const controller = new RobotController(new RobotFileData());
+const controller = new RobotController(new RobotRepository());
 
-robotRouter.get('/', controller.getAll.bind(controller));
-robotRouter.get('/:id', controller.get.bind(controller));
-robotRouter.post('/', controller.post.bind(controller));
-robotRouter.patch('/:id', controller.patch.bind(controller));
-robotRouter.delete('/:id', controller.delete.bind(controller));
+robotsRouter.get('/', controller.getAll.bind(controller));
+robotsRouter.get('/:id', controller.get.bind(controller));
+robotsRouter.post('/', controller.post.bind(controller));
+robotsRouter.patch('/:id', controller.patch.bind(controller));
+robotsRouter.delete('/:id', controller.delete.bind(controller));

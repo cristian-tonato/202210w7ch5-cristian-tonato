@@ -1,41 +1,15 @@
-import { Robot } from './../interfaces/robot.js';
 import { NextFunction, Request, Response } from 'express';
 import { Data } from '../data/data.js';
-import { HTTPError } from '../interfaces/error.js';
+import { Robot } from '../entities/robots.js';
+import { HTTPError } from '..//interfaces/error.js';
 
 export class RobotController {
-    constructor(public dataModel: Data<Robot>) {}
-    async getAll(req: Request, resp: Response, next: NextFunction) {
-        try {
-            const data = await this.dataModel.getAll();
-            resp.json(data).end();
-        } catch (error) {
-            const httpError = new HTTPError(
-                503,
-                'Service unavailable',
-                (error as Error).message
-            );
-            next(httpError);
-            return;
-        }
-    }
-    get(req: Request, resp: Response) {
-        //
-    }
+    constructor(public repository: Data<Robot>) {}
 
-    async post(req: Request, resp: Response, next: NextFunction) {
-        if (!req.body.title) {
-            const httpError = new HTTPError(
-                406,
-                'Not Acceptable',
-                'Title not included in the data'
-            );
-            next(httpError);
-            return;
-        }
+    async getAll(_req: Request, res: Response, next: NextFunction) {
         try {
-            const newRobot = await this.dataModel.post(req.body);
-            resp.json(newRobot).end();
+            const robots = await this.repository.getAll();
+            res.json({ robots });
         } catch (error) {
             const httpError = new HTTPError(
                 503,
@@ -43,58 +17,60 @@ export class RobotController {
                 (error as Error).message
             );
             next(httpError);
-            return;
         }
     }
 
-    async patch(req: Request, resp: Response, next: NextFunction) {
+    async get(req: Request, res: Response, next: NextFunction) {
         try {
-            const updateRobot = await this.dataModel.patch(
-                +req.params.id,
-                req.body
-            );
-            resp.json(updateRobot).end();
+            const robots = await this.repository.get(req.params.id);
+            res.json({ robots });
         } catch (error) {
-            if ((error as Error).message === 'Not found id') {
-                const httpError = new HTTPError(
-                    404,
-                    'Not Found',
-                    (error as Error).message
-                );
-                next(httpError);
-                return;
-            }
-            const httpError = new HTTPError(
-                503,
-                'Service unavailable',
-                (error as Error).message
-            );
-            next(httpError);
-            return;
+            next(this.createHttpError(error as Error));
         }
     }
 
-    async delete(req: Request, resp: Response, next: NextFunction) {
+    async post(req: Request, res: Response, next: NextFunction) {
         try {
-            await this.dataModel.delete(+req.params.id);
-            resp.json({}).end();
+            const robots = await this.repository.post(req.body);
+            res.json({ robots });
         } catch (error) {
-            if ((error as Error).message === 'Not found id') {
-                const httpError = new HTTPError(
-                    404,
-                    'Not Found',
-                    (error as Error).message
-                );
-                next(httpError);
-                return;
-            }
             const httpError = new HTTPError(
                 503,
                 'Service unavailable',
                 (error as Error).message
             );
             next(httpError);
-            return;
         }
+    }
+
+    async patch(req: Request, res: Response, next: NextFunction) {
+        try {
+            const robots = await this.repository.patch(req.params.id, req.body);
+            res.json({ robots });
+        } catch (error) {
+            next(this.createHttpError(error as Error));
+        }
+    }
+
+    async delete(req: Request, res: Response, next: NextFunction) {
+        try {
+            await this.repository.delete(req.params.id);
+            res.json({ id: req.params.id });
+        } catch (error) {
+            next(this.createHttpError(error as Error));
+        }
+    }
+
+    createHttpError(error: Error) {
+        if (error.message === 'Not found id') {
+            const httpError = new HTTPError(404, 'Not Found', error.message);
+            return httpError;
+        }
+        const httpError = new HTTPError(
+            503,
+            'Service unavailable',
+            error.message
+        );
+        return httpError;
     }
 }
