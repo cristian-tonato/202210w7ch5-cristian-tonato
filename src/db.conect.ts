@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
-//import { USER, CLUSTER, PASSWD } from './config.js';
+import { USER, CLUSTER, PASSWORD } from './config.js';
 
 export function dbConnect() {
     const DBName =
-        process.env.NODE_ENV !== 'test' ? 'Coders2022' : 'CodersTesting';
-    const uri= "mongodb+srv://CristianTonato:<password>@cluster0.ktm5wrs.mongodb.net/?retryWrites=true&w=majority"
+        process.env.NODE_ENV !== 'test' ? 'RobotsDB' : 'robots';
+    let uri = `mongodb+srv://${USER}:${PASSWORD}`;
+    uri += `@${CLUSTER}/${DBName}?retryWrites=true&w=majority`;
+
     return mongoose.connect(uri);
 }
