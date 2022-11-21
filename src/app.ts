@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (_req, res) => {
-    res.send('Robot').end();
+    res.send('robot').end();
 });
 
 app.use('/robot', robotRouter);
