@@ -13,7 +13,7 @@ const corsOptions = {
     origin: '*',
 };
 app.use(morgan('dev'));
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -26,13 +26,14 @@ app.get('/', (_req, res) => {
     res.send('API of robots. Write /robots to access').end();
 });
 
-app.use('/robots', robotsRouter);
+app.use('/robots*', robotsRouter);
 
 app.use(
     (
         error: CustomError,
         _req: Request,
         resp: Response,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         _next: NextFunction
     ) => {
         debug(error.name, error.statusCode, error.statusMessage, error.message);
