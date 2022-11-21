@@ -28,7 +28,7 @@ jobs:
         run: npm run test:prod #Change for a valid npm script
         env:
           USER: ${{ secrets.USER }}
-          PASSWD: ${{ secrets.PASSWD }}
+          PASSWORD: ${{ secrets.PASSWORD }}
           CLUSTER: ${{ secrets.CLUSTER }}
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master

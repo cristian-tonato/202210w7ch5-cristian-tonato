@@ -10,6 +10,7 @@ export class RobotController {
         try {
             const robots = await this.repository.getAll();
             res.json({ robots });
+            console.log(robots);
         } catch (error) {
             const httpError = new HTTPError(
                 503,
