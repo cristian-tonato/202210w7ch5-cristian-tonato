@@ -1,9 +1,9 @@
 import http from 'http';
 import { app } from './app.js';
-import { CustomError } from './interfaces/error.js';
+import { CustomError } from './interface/error.js';
 import { dbConnect } from './db.conect.js';
 
-const port = 3900;
+const port = process.env.PORT || 3900;
 const server = http.createServer(app);
 
 server.on('listening', () => {

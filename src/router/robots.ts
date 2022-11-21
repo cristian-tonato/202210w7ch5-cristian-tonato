@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { RobotController } from '..//controllers/robot.controller.js';
+import { RobotController } from '../controllers/robots.js';
 import { RobotRepository } from '../data/robots.repository.js';
 
 export const robotsRouter = Router();

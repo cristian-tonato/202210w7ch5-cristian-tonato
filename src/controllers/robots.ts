@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { Data } from '../data/data.js';
 import { Robot } from '../entities/robots.js';
-import { HTTPError } from '..//interfaces/error.js';
+import { HTTPError } from '../interface/error.js';
 
 export class RobotController {
     constructor(public repository: Data<Robot>) {}
