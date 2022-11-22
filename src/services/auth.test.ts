@@ -7,7 +7,7 @@ import {
     verifyToken,
 } from './auth';
 
-const mockPayload = { userName: 'Pepe' };
+const mockPayload = { userName: 'Linguo' };
 
 describe('Given createToken()...', () => {
     test('Then...', () => {
@@ -48,7 +48,7 @@ describe('Given verifyToken()...', () => {
 describe('Given passwdEncrypt()...', () => {
     test('Then it should encrypt the users password', async () => {
         const signSpy = await jest.spyOn(bc, 'hash');
-        const result = await passwdEncrypt('Pepe');
+        const result = await passwdEncrypt('Linguo');
         expect(typeof result).toBe('string');
         expect(signSpy).toHaveBeenCalled();
     });
@@ -57,8 +57,8 @@ describe('Given passwdEncrypt()...', () => {
 describe('Given passwdValidate()...', () => {
     test('Then it should encrypt the users password', async () => {
         const signSpy = await jest.spyOn(bc, 'compare');
-        const encrypt = await passwdEncrypt('Pepe');
-        const result = await passwdValidate('Pepe', encrypt);
+        const encrypt = await passwdEncrypt('Linguo');
+        const result = await passwdValidate('Linguo', encrypt);
         expect(result).toBe(true);
         expect(signSpy).toHaveBeenCalled();
     });

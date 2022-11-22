@@ -7,7 +7,7 @@ jest.mock('../data/robots.repository');
 
 const mockData = [
     {
-        name: 'Pepe',
+        name: 'Linguo',
         img: 'url.img',
         speed: 8,
         strength: 10,
