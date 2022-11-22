@@ -2,7 +2,7 @@ export type Robot = {
     id: string;
     name: string;
     img: string;
-    speed: string |number;
+    speed:number;
     strength: number;
     creationDate: string;
 };
