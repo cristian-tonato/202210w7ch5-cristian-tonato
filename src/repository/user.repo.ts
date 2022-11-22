@@ -1,29 +1,31 @@
 import { model } from 'mongoose';
-import { User} from '../entities/users.js';
+import { User, userSchema } from '../entities/users.js';
 import { passwdEncrypt } from '../services/auth.js';
-import { BasicRepo, id } from './repo.js';
+import { BasicData, id } from './data.js';
 
-export class UserRepository implements BasicRepo<User> {
-    #Model = model('Coffee', userSchema, 'coffees');
+export class UsersRepository implements BasicData<User> {
+    #Model = model('User', userSchema, 'users');
 
-    async get(id: id): Promise<User> {
-        const result = await this.#Model.findById(id); //as User;
+    async get(id: id) {
+        const result = await this.#Model.findById(id);
         if (!result) throw new Error('Not found id');
         return result as User;
     }
 
     async post(data: Partial<User>): Promise<User> {
-        // ESTO HACE REGISTER
-        if (typeof data.passwd !== 'string') throw new Error('');
-        data.passwd = await passwdEncrypt(data.passwd);
+        if (typeof data.password !== 'string') throw Error('');
+        data.password = await passwdEncrypt(data.password);
         const result = await this.#Model.create(data);
         return result as User;
     }
 
-    async find(search: any): Promise<User> {
-        console.log(search);
-        const result = await this.#Model.findOne(search); //as User;
-        if (!result) throw new Error('Not found id');
+    async findOne(search: any): Promise<User> {
+        const result = await this.#Model.findOne(search);
+        if (!result) throw new Error('User not found');
         return result as unknown as User;
+    }
+
+    getUserModel() {
+        return this.#Model;
     }
 }

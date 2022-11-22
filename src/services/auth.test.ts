@@ -1,50 +1,65 @@
-import { createToken, readToken } from './auth';
 import jwt from 'jsonwebtoken';
-import { SECRET } from '../config.js';
-// Para mockear el SECRET
-// import * as config from '../config.js';
-// jest.mock('../config.js');
-// config.SECRET = 'fjksdjksfjk'
+import bc from 'bcryptjs';
+import {
+    createToken,
+    passwdEncrypt,
+    passwdValidate,
+    verifyToken,
+} from './auth';
 
-const mock = {
-    userName: 'Pepe',
-};
+const mockPayload = { userName: 'Pepe' };
 
-describe('Given createToken ', () => {
+describe('Given createToken()...', () => {
     test('Then...', () => {
         const signSpy = jest.spyOn(jwt, 'sign');
-        const r = createToken(mock);
-        expect(typeof r).toBe('string');
-        expect(signSpy).toHaveBeenCalledWith(mock, SECRET);
+        const result = createToken(mockPayload);
+        expect(typeof result).toBe('string');
+        expect(signSpy).toHaveBeenCalled();
     });
 });
 
-describe('Given readToken ', () => {
-    describe('Whne token is valid', () => {
-        const token = createToken(mock);
-        console.log(token);
-        test('Then', () => {
-            const r = readToken(token);
-            expect(r.userName).toEqual(mock.userName);
+describe('Given verifyToken()...', () => {
+    const token = createToken(mockPayload);
+    describe('When token is valid...', () => {
+        test('Then...', () => {
+            const result = verifyToken(token);
+            expect(result.userName).toBe(mockPayload.userName);
         });
     });
 
-    describe('Whne token is not valid', () => {
-        const token =
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlBlcGUiLCJpYXQiOjE2Njg3NzMwNTB9.DGdcCXGRUS4SaCMyY5RSy-8v9tylvmV_HE1rQJGYJ_5';
-        test('should', () => {
+    describe('When token is not valid...', () => {
+        test('Then if the token is wrong it should throw an error', () => {
+            const token =
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlBlcGUiLCJpYXQiOjE2Njg3NzMwNTR9.P1oitfdk-xVzRUFj9gumqs3bPo1OCzgEhh-1YXQ_WN7';
             expect(() => {
-                readToken(token);
+                verifyToken(token);
+            }).toThrow();
+        });
+
+        test('Then if the token is empty it should throw an error', () => {
+            const token = '';
+            expect(() => {
+                verifyToken(token);
             }).toThrow();
         });
     });
+});
 
-    describe('Whne token is bad formatted', () => {
-        const token = 'soy un token';
-        test('should', () => {
-            expect(() => {
-                readToken(token);
-            }).toThrow();
-        });
+describe('Given passwdEncrypt()...', () => {
+    test('Then it should encrypt the users password', async () => {
+        const signSpy = await jest.spyOn(bc, 'hash');
+        const result = await passwdEncrypt('Pepe');
+        expect(typeof result).toBe('string');
+        expect(signSpy).toHaveBeenCalled();
+    });
+});
+
+describe('Given passwdValidate()...', () => {
+    test('Then it should encrypt the users password', async () => {
+        const signSpy = await jest.spyOn(bc, 'compare');
+        const encrypt = await passwdEncrypt('Pepe');
+        const result = await passwdValidate('Pepe', encrypt);
+        expect(result).toBe(true);
+        expect(signSpy).toHaveBeenCalled();
     });
 });

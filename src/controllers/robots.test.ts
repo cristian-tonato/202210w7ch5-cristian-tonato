@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { RobotRepository } from '../data/robots.repository';
+import { RobotRepository } from '../repository/robots.repository';
 import { RobotController } from './robots';
 import { HTTPError } from '../interface/error';
 
