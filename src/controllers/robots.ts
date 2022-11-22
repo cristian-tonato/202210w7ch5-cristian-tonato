@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import { Data } from '../repository/data.js';
+import { Repo } from '../repository/data.js';
 import { Robot } from '../entities/robots.js';
 import { HTTPError } from '../interface/error.js';
 
 export class RobotController {
-    constructor(public repository: Data<Robot>) {}
+    constructor(public repository: Repo<Robot>) {}
 
     async getAll(_req: Request, res: Response, next: NextFunction) {
         try {

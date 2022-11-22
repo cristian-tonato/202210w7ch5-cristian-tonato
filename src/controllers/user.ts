@@ -1,11 +1,12 @@
+
 import { NextFunction, Request, Response } from 'express';
 import { User } from '../entities/users.js';
 import { HTTPError } from '../interface/error.js';
-import { BasicData } from '../repository/data.js';
+import { BasicRepo } from '../repository/data.js';
 import { createToken, passwdValidate } from '../services/auth.js';
 
 export class UsersController {
-    constructor(public repository: BasicData<User>) {
+    constructor(public repository: BasicRepo<User>) {
         //
     }
 
@@ -25,7 +26,7 @@ export class UsersController {
 
     async login(req: Request, res: Response, next: NextFunction) {
         try {
-            const user = await this.repository.findOne({ name: req.body.name });
+            const user = await this.repository.find({ name: req.body.name });
             const isPasswdValid = await passwdValidate(
                 req.body.password,
                 user.password

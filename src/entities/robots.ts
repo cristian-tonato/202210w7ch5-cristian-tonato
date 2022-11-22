@@ -1,4 +1,5 @@
 export type Robot = {
+    owner: any;
     id: string;
     name: string;
     img: string;

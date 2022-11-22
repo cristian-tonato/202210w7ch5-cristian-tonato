@@ -1,9 +1,10 @@
+import { BasicRepo, id } from './data.js';
 import { model } from 'mongoose';
 import { User, userSchema } from '../entities/users.js';
 import { passwdEncrypt } from '../services/auth.js';
-import { BasicData, id } from './data.js';
 
-export class UsersRepository implements BasicData<User> {
+
+export class UsersRepository implements BasicRepo<User> {
     #Model = model('User', userSchema, 'users');
 
     async get(id: id) {
@@ -19,7 +20,7 @@ export class UsersRepository implements BasicData<User> {
         return result as User;
     }
 
-    async findOne(search: any): Promise<User> {
+    async find(search: any): Promise<User> {
         const result = await this.#Model.findOne(search);
         if (!result) throw new Error('User not found');
         return result as unknown as User;
