@@ -2,16 +2,27 @@ import jwt from 'jsonwebtoken';
 import bc from 'bcryptjs';
 import { SECRET } from '../config.js';
 
-export const createToken = (payload: { userName: string }) => {
-    if (typeof SECRET !== 'string') throw new Error();
-    return jwt.sign(payload, SECRET as string);
+export type TokenPayload = {
+    id: string;
+    name: string;
+    role: string;
+};
+
+export const getSecret = (secret = SECRET) => {
+    if (typeof secret !== 'string' || secret === '') {
+        throw new Error('Bad Secret for token creation');
+    }
+    return secret;
+};
+
+export const createToken = (payload: TokenPayload) => {
+    return jwt.sign(payload, getSecret());
 };
 
 export const verifyToken = (token: string) => {
-    if (typeof SECRET !== 'string') throw new Error();
-    const payload = jwt.verify(token, SECRET as string);
-    if (typeof payload === 'string') throw new Error('Token not valid');
-    return payload;
+    const payload = jwt.verify(token, getSecret());
+    // if (typeof payload === 'string') throw new Error('Token not valid');
+    return payload as jwt.JwtPayload;
 };
 
 export const passwdEncrypt = (passwd: string) => {

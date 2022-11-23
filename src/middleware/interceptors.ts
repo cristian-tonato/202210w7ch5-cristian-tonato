@@ -4,7 +4,6 @@ import { HTTPError } from '../interface/error.js';
 import { RobotRepository } from '../repository/robots.repository.js';
 import { verifyToken } from '../services/auth.js';
 
-
 export interface ExtraRequest extends Request {
     payload?: JwtPayload;
 }

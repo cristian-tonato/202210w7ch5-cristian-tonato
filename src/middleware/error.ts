@@ -7,12 +7,6 @@ export const errorManager = (
     resp: Response,
     _next: NextFunction
 ) => {
-    console.log(
-        error.name,
-        error.statusCode,
-        error.statusMessage,
-        error.message
-    );
     let status = error.statusCode || 500;
     if (error.name === 'ValidationError') {
         status = 406;

@@ -35,7 +35,11 @@ export class UsersController {
                 user.passwd
             );
             if (!isPasswdValid) throw new Error('Wrong password');
-            const token = createToken({ userName: user.name });
+            const token = createToken({
+                id: user.id.toString(),
+                name: user.name,
+                role: user.role,
+            });
             res.json({ token });
         } catch (error) {
             next(this.createHttpError(error as Error));
