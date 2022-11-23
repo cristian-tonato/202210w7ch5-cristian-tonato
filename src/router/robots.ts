@@ -13,5 +13,15 @@ const controller = new RobotController(
 robotsRouter.get('/', controller.getAll.bind(controller));
 robotsRouter.get('/:id', controller.get.bind(controller));
 robotsRouter.post('/', logged, controller.post.bind(controller));
-robotsRouter.patch('/:id', logged, who, controller.patch.bind(controller));
-robotsRouter.delete('/:id', logged, who, controller.delete.bind(controller));
+robotsRouter.patch(
+    '/update/:idRobot',
+    logged,
+    who,
+    controller.patch.bind(controller)
+);
+robotsRouter.delete(
+    '/delete/:idRobot',
+    logged,
+    who,
+    controller.delete.bind(controller)
+);

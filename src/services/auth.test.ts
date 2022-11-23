@@ -7,8 +7,7 @@ import {
     verifyToken,
 } from './auth';
 
-const mockPayload = { userName: 'Linguo' };
-
+const mockPayload = { id: '12asd', name: 'Pepe', role: 'Admin' };
 describe('Given createToken()...', () => {
     test('Then...', () => {
         const signSpy = jest.spyOn(jwt, 'sign');
@@ -23,7 +22,7 @@ describe('Given verifyToken()...', () => {
     describe('When token is valid...', () => {
         test('Then...', () => {
             const result = verifyToken(token);
-            expect(result.userName).toBe(mockPayload.userName);
+            expect(result.id).toBe(mockPayload.id);
         });
     });
 
