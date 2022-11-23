@@ -1,28 +1,37 @@
-import { Schema } from 'mongoose';
+import { model, Schema, Types } from 'mongoose';
 
-export type ProtoUser = {
+export type ProtoUserI = {
     name?: string;
     email?: string;
-    password?: string;
+    passwd?: string;
     role?: string;
+    robots?: Array<Types.ObjectId>;
 };
 
-export type User = {
-    id: string;
+export type UserI = {
+    id: Types.ObjectId;
     name: string;
     email: string;
-    password: string;
+    passwd: string;
     role: string;
+    robots: Array<Types.ObjectId>;
 };
 
-export const userSchema = new Schema({
+export const userSchema = new Schema<UserI>({
     name: {
         type: String,
         required: true,
+        unique: true,
     },
     email: String,
-    password: String,
+    passwd: String,
     role: String,
+    robots: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Robots',
+        },
+    ],
 });
 
 userSchema.set('toJSON', {
@@ -30,6 +39,8 @@ userSchema.set('toJSON', {
         returnedObject.id = returnedObject._id;
         delete returnedObject.__v;
         delete returnedObject._id;
-        delete returnedObject.password;
+        delete returnedObject.passwd;
     },
 });
+
+export const User = model<UserI>('User', userSchema, 'users');
