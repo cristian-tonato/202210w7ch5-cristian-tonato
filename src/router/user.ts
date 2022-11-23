@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import { UsersController } from '../controllers/user.js';
 import { RobotRepository } from '../repository/robots.repository.js';
-import { UsersRepository } from '../repository/user.repo.js';
+import { UserRepository } from '../repository/user.repo.js';
 
 export const usersRouter = Router();
 
 const controller = new UsersController(
-    new UsersRepository(),
-    new RobotRepository()
+    UserRepository.getInstance(),
+    RobotRepository.getInstance()
 );
 
 usersRouter.post('/register', controller.register.bind(controller));

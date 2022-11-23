@@ -1,12 +1,15 @@
-
 import { NextFunction, Request, Response } from 'express';
-import { User } from '../entities/users.js';
+import { RobotI } from '../entities/robots.js';
+import { UserI } from '../entities/users.js';
 import { HTTPError } from '../interface/error.js';
-import { BasicRepo } from '../repository/data.js';
+import { BasicRepo, Repo } from '../repository/data.js';
 import { createToken, passwdValidate } from '../services/auth.js';
 
 export class UsersController {
-    constructor(public repository: BasicRepo<User>) {
+    constructor(
+        public repository: BasicRepo<UserI>,
+        public robotRepo: Repo<RobotI>
+    ) {
         //
     }
 
@@ -29,7 +32,7 @@ export class UsersController {
             const user = await this.repository.find({ name: req.body.name });
             const isPasswdValid = await passwdValidate(
                 req.body.password,
-                user.password
+                user.passwd
             );
             if (!isPasswdValid) throw new Error('Wrong password');
             const token = createToken({ userName: user.name });
