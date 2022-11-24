@@ -13,6 +13,7 @@ export const logged = (
     res: Response,
     next: NextFunction
 ) => {
+    console.log('logged');
     const authString = req.get('Authorization');
     if (!authString || !authString?.startsWith('Bearer')) {
         next(new HTTPError(403, 'Forbidden', 'Incorrect user or password'));
@@ -20,7 +21,6 @@ export const logged = (
     }
     try {
         const token = authString.slice(7);
-        verifyToken(token);
         req.payload = verifyToken(token);
         next();
     } catch (error) {

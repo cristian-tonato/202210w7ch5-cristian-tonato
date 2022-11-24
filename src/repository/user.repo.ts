@@ -1,6 +1,6 @@
 import createDebug from 'debug';
 import { model } from 'mongoose';
-import { User, UserI, userSchema } from '../entities/users.js';
+import { UserI, userSchema } from '../entities/users.js';
 import { passwdEncrypt } from '../services/auth.js';
 import { BasicRepo, id } from './data.js';
 const debug = createDebug('W8:repositories:user');

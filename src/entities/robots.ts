@@ -1,10 +1,10 @@
 import { Schema, Types, model } from 'mongoose';
 
-const robotsImagesURL = 'https://robohash.org';
+const robotsimgsURL = 'https://robohash.org';
 
 export type ProtoRobotI = {
     name?: string;
-    image?: string;
+    img?: string;
     speed?: number;
     resistance?: number;
     date?: string | Date;
@@ -14,7 +14,7 @@ export type ProtoRobotI = {
 export type RobotI = {
     id: Types.ObjectId;
     name: string;
-    image: string;
+    img: string;
     speed: number;
     resistance: number;
     date: Date;
@@ -27,9 +27,9 @@ export const robotSchema = new Schema<RobotI>({
         required: true,
         unique: true,
     },
-    image: {
+    img: {
         type: String,
-        set: (name: string) => `${robotsImagesURL}/${name}`,
+        set: (name: string) => `${robotsimgsURL}/${name}`,
     },
     speed: { type: Number, min: 0, max: 10 },
     resistance: { type: Number, min: 0, max: 10 },
